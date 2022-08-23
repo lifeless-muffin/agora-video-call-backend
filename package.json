@@ -1,0 +1,20 @@
+{
+  "name": "group-call-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lifeless-muffin/agora-video-call-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lifeless-muffin/agora-video-call-backend/issues"
+  },
+  "homepage": "https://github.com/lifeless-muffin/agora-video-call-backend#readme"
+}
