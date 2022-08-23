@@ -8,7 +8,7 @@ const { createNewChannel, joinChannel } = require('./services/channels.service')
 const router = express.Router();
 
 dotenv.config();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 const APP_ID = process.env.APP_ID;
 const APP_CERTIFICATE = process.env.APP_CERTIFICATE;
 const MONGODB_URI = process.env.MONGODB_URI;

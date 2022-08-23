@@ -16,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/lifeless-muffin/agora-video-call-backend/issues"
   },
-  "homepage": "https://github.com/lifeless-muffin/agora-video-call-backend#readme"
+  "homepage": "https://github.com/lifeless-muffin/agora-video-call-backend#readme",
+  "dependencies": {
+    "debug": "^4.3.4",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "mongoose": "^6.5.2"
+  }
 }
