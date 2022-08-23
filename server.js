@@ -33,10 +33,16 @@ const handleChannelJoining = (req, resp) => {
   return joinChannel({req, resp, APP_ID, APP_CERTIFICATE});
 }
 
+const handleBaseRoute = (req, resp) => {
+  return resp.status(200)
+    .json('Connected to Agora Meet backend')
+}
+
 // routes
 router.get('/rtc/:channel/:role/:tokenType/:uid', nocache, handleTokenGeneration);
 router.post('/create/:channel/:role/:tokenType/:uid', nocache, handleChannelCreation);
 router.post('/join/:channel/:role/:tokenType/:uid', nocache, handleChannelJoining);
+router.get('/', nocache, handleBaseRoute);
 
 mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true})
 	.then(() => {app.listen(PORT, () => {console.log(`Listening to port: ${PORT}`);})})
