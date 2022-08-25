@@ -1,7 +1,7 @@
 const ChannelModel = require("../models/channel");
 const { generateRTCToken } = require("./agora.service");
 const { validateJoinChannel } = require("./validation.service");
-const { saveNewChannel } = require("./database.service");
+const { saveNewChannel, joinAChannel } = require("./database.service");
 
 const joinChannelValidation = ({req, resp}) => {
   if (!req?.params?.channel || !req?.params?.username) {
@@ -13,13 +13,10 @@ const joinChannelValidation = ({req, resp}) => {
 }
 
 const createChannelFormValidation = ({req, resp}) => {
-	if (!req?.body?.channelName) {
+	if (!req?.params?.channel) {
 		resp.status(400).json({'error': 'channel name is required'});
 		return false
-	} else if (!req?.body?.channelHost) {
-		resp.status(400).json({'error': 'channel host is required'});
-		return false
-	} else if (!req?.body?.channelTimeline || req.body?.channelTimeline.length < 1) {
+	} else if (!req?.body?.timeline || req.body?.timeline.length < 1) {
 		resp.status(400).json({'error': 'channel timeline is required'});
 		return false
 	} else {
@@ -35,7 +32,7 @@ const createNewChannel = async ({req, resp, APP_CERTIFICATE, APP_ID}) => {
 	const username = req.params?.username; // agora ID
 	const timeline = req.body?.timeline;
   
-	// if (createChannelFormValidation({req, resp})) {return null}
+	if (!createChannelFormValidation({req, resp})) {return null}
   const channel = saveNewChannel({username, clientId, timeline, name})
 
   try {
@@ -52,15 +49,22 @@ const createNewChannel = async ({req, resp, APP_CERTIFICATE, APP_ID}) => {
 }
 
 const joinChannel = async ({req, resp, APP_ID, APP_CERTIFICATE}) => {
-	
-  const channelName = req.params.channel;
+  
+  let channelDetails = {};
+  const name = req.params.channel;
   const username = req.params.username;
+  const clientId = req.params.uid
 
   if (!joinChannelValidation({req, resp})) {return null};
+  
+  try {
+    channelDetails = await joinAChannel({username, clientId, name});
+  } catch (error) {
+    resp.status(400).json(error);
+    return null;
+  }
 
-  let channelDetails = await ChannelModel.find({channelName: channelName});
   const isChannelJoinable = validateJoinChannel(channelDetails); 
-
   if (isChannelJoinable.error) {
     resp.status(isChannelJoinable.status_code)
       .json(isChannelJoinable?.error_message);
@@ -69,7 +73,11 @@ const joinChannel = async ({req, resp, APP_ID, APP_CERTIFICATE}) => {
   }
 
   let rtcToken = generateRTCToken({req, resp, APP_CERTIFICATE, APP_ID});
-  resp.status(200).json({channelDetails, rtcToken: rtcToken?.rtcToken});
+  resp.status(200).json({
+    channelDetails: channelDetails.channel, 
+    rtcToken: rtcToken?.rtcToken, 
+    clientInformation: channelDetails.clientInformation
+  });
 }
 
 module.exports = {createNewChannel, joinChannel};

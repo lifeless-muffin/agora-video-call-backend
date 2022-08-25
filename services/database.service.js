@@ -17,7 +17,7 @@ const saveNewChannel = (props) => {
   const channelId = crypto.randomBytes(16).toString("hex");
 	const totalDuration = calculateTotalDuration(timeline); // in seconds
   const dateTimeInSecs = Math.round(new Date().getTime() / 1000); // in seconds
- console.log(dateTimeInSecs) 
+
   const hostInformation = {
     username,
     uid: clientId,
@@ -38,4 +38,26 @@ const saveNewChannel = (props) => {
   return channel;
 }
 
-module.exports = {saveNewChannel}
+const joinAChannel = async (props) => {
+
+  // destructure props
+  const {username, clientId, name} = props;
+  const dateTimeInSecs = Math.round(new Date().getTime() / 1000); // in seconds
+
+  const clientInformation = {
+    username,
+    uid: clientId,
+    joinedAt: dateTimeInSecs,
+    isHost: false
+  }
+
+  const channel = await ChannelModel.findOneAndUpdate(
+    {channelName: name}, 
+    {$push: {participant: clientInformation}},
+    {safe: true, upsert: true},
+  )
+  
+  return {channel, clientInformation};
+}
+
+module.exports = {saveNewChannel, joinAChannel}
