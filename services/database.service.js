@@ -17,7 +17,7 @@ const saveNewChannel = (props) => {
   const channelId = crypto.randomBytes(16).toString("hex");
 	const totalDuration = calculateTotalDuration(timeline); // in seconds
   const dateTimeInSecs = Math.round(new Date().getTime() / 1000); // in seconds
-
+ console.log(dateTimeInSecs) 
   const hostInformation = {
     username,
     uid: clientId,
