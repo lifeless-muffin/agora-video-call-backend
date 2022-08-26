@@ -14,8 +14,8 @@ const channelSchema = new Schema({
 		isBreak: {type: Boolean, required: false}
 	}],
   participant: [{
-    username: {type: String, required: true},
-    uid: {type: String, required: true},
+    username: {type: String, required: true, unique: true},
+    uid: {type: String, required: true, unique: true},
     joinedAt: {type: Number, required: true},
     isHost: {type: Boolean, required: true}
   }]
