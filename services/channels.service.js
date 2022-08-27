@@ -45,7 +45,7 @@ const createNewChannel = async ({req, resp, APP_CERTIFICATE, APP_ID}) => {
   }
   
   let rtcToken = generateRTCToken({clientId, req, resp, APP_CERTIFICATE, APP_ID});
-  resp.status(200).json({channelDetails, rtcToken});
+  resp.status(200).json({channelDetails, rtcToken: rtcToken.rtcToken});
 }
 
 const joinChannel = async ({req, resp, APP_ID, APP_CERTIFICATE}) => {
