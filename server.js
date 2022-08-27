@@ -1,9 +1,9 @@
 const dotenv = require('dotenv');
 const express = require('express');
-const {nocache} = require('./middlewares/nocache');
-const { generateRTCToken } = require('./services/agora.service');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const {nocache} = require('./middlewares/nocache');
+const { generateRTCToken } = require('./services/agora.service');
 const { createNewChannel, joinChannel } = require('./services/channels.service');
 const router = express.Router();
 
@@ -49,8 +49,8 @@ const handleBaseRoute = (req, resp) => {
 
 // routes
 router.get('/rtc/:channel/:role/:tokenType/:uid', nocache, handleTokenGeneration); 
-router.post('/create/:channel/:role/:tokenType/:uid/:username', nocache, handleChannelCreation);
-router.get('/join/:channel/:role/:tokenType/:uid/:username', nocache, handleChannelJoining);
+router.post('/create/:channel/:role/:tokenType/:username', nocache, handleChannelCreation);
+router.get('/join/:channel/:role/:tokenType/:username', nocache, handleChannelJoining);
 router.get('/', nocache, handleBaseRoute);
 
 mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true})

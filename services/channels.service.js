@@ -2,6 +2,7 @@ const ChannelModel = require("../models/channel");
 const { generateRTCToken } = require("./agora.service");
 const { validateJoinChannel } = require("./validation.service");
 const { saveNewChannel, joinAChannel } = require("./database.service");
+const crypto = require("crypto");
 
 const joinChannelValidation = ({req, resp}) => {
   if (!req?.params?.channel || !req?.params?.username) {
@@ -25,10 +26,9 @@ const createChannelFormValidation = ({req, resp}) => {
 }
 
 const createNewChannel = async ({req, resp, APP_CERTIFICATE, APP_ID}) => {
-
   let channelDetails = {}; 
 	const name = req.params?.channel;
-	const clientId = req.params?.uid; // agora ID
+	const clientId = crypto.randomUUID().split("-").join(""); // agora ID
 	const username = req.params?.username; // agora ID
 	const timeline = req.body?.timeline;
   
@@ -53,7 +53,7 @@ const joinChannel = async ({req, resp, APP_ID, APP_CERTIFICATE}) => {
   let channelDetails = {};
   const name = req.params.channel;
   const username = req.params.username;
-  const clientId = req.params.uid
+  const clientId = crypto.randomUUID().split("-").join("");
 
   if (!joinChannelValidation({req, resp})) {return null};
   
