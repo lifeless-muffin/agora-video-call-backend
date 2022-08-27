@@ -39,12 +39,12 @@ const createNewChannel = async ({req, resp, APP_CERTIFICATE, APP_ID}) => {
     channelDetails = await channel.save()
   } catch (error) {
     resp.status(400)
-      .json(error);    
+    .json(error);    
       
     return null;
   }
   
-  let rtcToken = generateRTCToken({req, resp, APP_CERTIFICATE, APP_ID});
+  let rtcToken = generateRTCToken({clientId, req, resp, APP_CERTIFICATE, APP_ID});
   resp.status(200).json({channelDetails, rtcToken});
 }
 
@@ -72,7 +72,7 @@ const joinChannel = async ({req, resp, APP_ID, APP_CERTIFICATE}) => {
     return null;
   }
 
-  let rtcToken = generateRTCToken({req, resp, APP_CERTIFICATE, APP_ID});
+  let rtcToken = generateRTCToken({clientId, req, resp, APP_CERTIFICATE, APP_ID});
   resp.status(200).json({
     channelDetails: channelDetails.channel, 
     rtcToken: rtcToken?.rtcToken, 

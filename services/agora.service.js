@@ -1,8 +1,8 @@
 const { RtcRole, RtcTokenBuilder } = require("agora-access-token");
 
 // we'll generate the token here
-const generateRTCToken = ({req, resp, APP_CERTIFICATE, APP_ID, ...props}) => {
-	const uid = req.params.uid;
+const generateRTCToken = ({clientId, req, resp, APP_CERTIFICATE, APP_ID, ...props}) => {
+	const uid = clientId;
 	const channelName = req.params.channel;
 	const tokenType = req.params.tokenType;
 	let role = req.params.role;	
